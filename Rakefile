@@ -4,9 +4,9 @@ require 'rake'
 require 'date'
 
 # Defines gem name.
-def repo_name; 'appium_lib' end # rubygems.org name
-def gh_name; 'appium/ruby_lib' end # the name as used on github.com
-def version_file; "lib/#{repo_name}/common/version.rb" end
+def repo_name; 'test_runner' end # rubygems.org name
+def gh_name; 'bootstraponline/test_runner' end # the name as used on github.com
+def version_file; "lib/#{repo_name}/version.rb" end
 def version_rgx; /VERSION = '([^']+)'/m end
 
 def version
@@ -64,9 +64,8 @@ task :release => :gem do
   sh "git commit --allow-empty -am 'Release #{version}'"
   sh 'git pull'
   sh "git tag v#{version}"
-  # update notes and docs now that there's a new tag
+  # update notes now that there's a new tag
   Rake::Task['notes'].execute
-  Rake::Task['docs'].execute
   sh "git commit --allow-empty -am 'Update release notes'"
   sh 'git push origin master'
   sh "git push origin v#{version}"
@@ -98,11 +97,6 @@ end
 desc 'Install gem'
 task :install => [ :gem, :uninstall ] do
   sh "gem install --no-rdoc --no-ri --local #{repo_name}-#{version}.gem"
-end
-
-desc 'Update android and iOS docs'
-task :docs do
-  sh "ruby docs_gen/make_docs.rb"
 end
 
 desc 'Update release notes'
