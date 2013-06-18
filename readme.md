@@ -1,0 +1,1 @@
+A common Rakefile for releasing Ruby gems.
