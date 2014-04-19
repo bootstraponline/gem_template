@@ -6,7 +6,7 @@ require 'date'
 # Defines gem name.
 def repo_name; 'test_runner' end # rubygems.org name
 def gh_name; 'bootstraponline/test_runner' end # the name as used on github.com
-def version_file; "lib/#{repo_name}/version.rb" end
+def version_file; File.expand_path Dir.glob("lib/#{repo_name}/**/version.rb").first; end
 def version_rgx; /VERSION = '([^']+)'/m end
 
 def version
@@ -17,7 +17,7 @@ def bump
   data = File.read version_file
 
   v_line = data.match version_rgx
-  d_line = data.match /DATE = '([^']+)'/m
+  d_line = data.match /DATE\s*=\s*'([^']+)'/m
 
   old_v = v_line[0]
   old_d = d_line[0]
